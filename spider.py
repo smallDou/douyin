@@ -6,11 +6,6 @@ import json
 import csv
 import sys
 
-sys.path.append('../')
-from db import MongoDB
-
-mongo = MongoDB('quanliren','douyin')
-
 class Spider(object):
     def __init__(self):
         pass
@@ -41,12 +36,10 @@ class Spider(object):
                 result['comment_count'] = item.get('statistics').get('comment_count') #评论次数
                 result['share_count'] = item.get('statistics').get('share_count') #分享次数
                 result['info'] = item.get('desc') #视频说明
-                if mongo.find(result) is None:
-                    mongo.insert(result)
-                    self.save_to_csv(result)
+                self.save_to_csv(result)
 
     def save_to_csv(self,result):
-        file = f'douyin_洛神山庄.csv'
+        file = f'douyin.csv'
         with open(file,'a+',encoding='utf-8',newline='') as f:
             f_csv = csv.writer(f)
             f_csv.writerow(result.values())
